@@ -20,6 +20,7 @@ export default class StepIndicator extends Component {
 
     const defaultStyles = {
       stepIndicatorSize: 30,
+      unfinishedStepIndicator: 30,
       currentStepIndicatorSize: 40,
       separatorStrokeWidth: 3,
       separatorStrokeUnfinishedWidth: 0,
@@ -54,11 +55,15 @@ export default class StepIndicator extends Component {
     };
 
     this.progressAnim = new Animated.Value(0);
+    const { 
+      stepIndicatorSize,
+    } = this.state.customStyles;
+
     this.sizeAnim = new Animated.Value(
-      this.state.customStyles.stepIndicatorSize
+      stepIndicatorSize
     );
     this.borderRadiusAnim = new Animated.Value(
-      this.state.customStyles.stepIndicatorSize / 2
+      stepIndicatorSize / 2
     );
   }
 
@@ -327,8 +332,8 @@ export default class StepIndicator extends Component {
         backgroundColor: this.state.customStyles.stepIndicatorUnFinishedColor,
         borderWidth: this.state.customStyles.stepStrokeWidth,
         borderColor: this.state.customStyles.stepStrokeUnFinishedColor,
-        height: this.state.customStyles.stepIndicatorSize,
-        width: this.state.customStyles.stepIndicatorSize,
+        height: this.state.customStyles.unfinishedStepIndicator,
+        width: this.state.customStyles.unfinishedStepIndicator,
         borderRadius: this.state.customStyles.stepIndicatorSize / 2
       };
       indicatorLabelStyle = {
@@ -340,7 +345,7 @@ export default class StepIndicator extends Component {
     }
     default:
     }
-
+    
     return (
       <Animated.View key={'step-indicator'} style={[styles.step, stepStyle]}>
         {renderStepIndicator ? (
@@ -373,7 +378,6 @@ export default class StepIndicator extends Component {
     }
     const animateToPosition =
       (this.state.progressBarSize / (stepCount - 1)) * position;
-    this.sizeAnim.setValue(this.state.customStyles.stepIndicatorSize);
     this.borderRadiusAnim.setValue(
       this.state.customStyles.stepIndicatorSize / 2
     );
@@ -382,16 +386,10 @@ export default class StepIndicator extends Component {
         toValue: animateToPosition,
         duration: 200
       }),
-      Animated.parallel([
-        Animated.timing(this.sizeAnim, {
-          toValue: this.state.customStyles.currentStepIndicatorSize,
-          duration: 100
-        }),
-        Animated.timing(this.borderRadiusAnim, {
-          toValue: this.state.customStyles.currentStepIndicatorSize / 2,
-          duration: 100
-        })
-      ])
+      Animated.timing(this.sizeAnim, {
+        toValue: this.state.customStyles.currentStepIndicatorSize,
+        duration: 100
+      }),
     ]).start();
   }
 }
