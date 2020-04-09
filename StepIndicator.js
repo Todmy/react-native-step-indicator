@@ -181,7 +181,7 @@ export default class StepIndicator extends Component {
 
   renderStepIndicator = () => {
     let steps = [];
-    const { labels, stepCount, direction } = this.props;
+    const { stepCount, direction } = this.props;
     for (let position = 0; position < stepCount; position++) {
       steps.push(
         <TouchableWithoutFeedback
@@ -284,17 +284,11 @@ export default class StepIndicator extends Component {
 
   renderStep = position => {
     const {
-      currentPosition,
-      stepCount,
-      direction,
       renderStepIndicator
     } = this.props;
     let stepStyle;
     let indicatorLabelStyle;
-    const separatorStyle =
-      direction === 'vertical'
-        ? { width: this.state.customStyles.separatorStrokeWidth, zIndex: 10 }
-        : { height: this.state.customStyles.separatorStrokeWidth };
+
     switch (this.getStepStatus(position)) {
     case STEP_STATUS.CURRENT: {
       stepStyle = {
